@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Best Cars{% endblock %} - Best Cars</title>
+    <title>{% block title %}{% endblock %} - Dealership Review</title>
     {% load static %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> -->
@@ -15,29 +15,44 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Best Cars</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+        <a class="navbar-brand" href="#">Dealership Review</a>
+        <ul class="navbar-nav mr-auto">
 
-                {% url 'djangoapp:index' as current_url %}
-                <li class="nav-item {% if request.path == current_url %}active{% endif %}">
-                    <a class="nav-link" href="{{ current_url }}">Home</a>
-                </li>
+            {% url 'djangoapp:index' as current_url %}
+            <li class="nav-item {% if request.path == current_url %}active{% endif %}">
+                <a class="nav-link" href="{{ current_url }}">Home</a>
+            </li>
 
-                {% url 'djangoapp:about' as current_url %}
-                <li class="nav-item {% if request.path == current_url %}active{% endif %}">
-                    <a class="nav-link" href="{{ current_url }}">About Us</a>
-                </li>
+            {% url 'djangoapp:about' as current_url %}
+            <li class="nav-item {% if request.path == current_url %}active{% endif %}">
+                <a class="nav-link" href="{{ current_url }}">About Us</a>
+            </li>
 
-                {% url 'djangoapp:contact' as current_url %}
-                <li class="nav-item {% if request.path == current_url %}active{% endif %}">
-                    <a class="nav-link" href="{{ current_url }}">Contact Us</a>
+            {% url 'djangoapp:contact' as current_url %}
+            <li class="nav-item {% if request.path == current_url %}active{% endif %}">
+                <a class="nav-link" href="{{ current_url }}">Contact Us</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+                <li>
+                    <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
+                    <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
                 </li>
-            </ul>
-        </div>
+            {% else %}
+                <li>
+                    <form class="form-inline" action="{% url 'djangoapp:login' %}" method="post">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Username" name="username" >
+                            <input type="password" class="form-control" placeholder="Username" name="psw" >
+                            <button class="btn btn-primary" type="submit">Login</button>
+                            <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
+                        </div>
+                    </form>
+                </li>
+            {% endif %}
+        </ul>
     </nav>
 
     <div class="container-fluid pt-1">
